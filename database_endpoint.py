@@ -52,11 +52,11 @@ def process_order(content):
 def verify(content):
         sig = content.get('sig')
         payload = content.get('payload')
-        #print(sig)
-        #print(payload)
+        print(sig)
+        print(payload)
         platform = payload.get('platform')
         message = payload.get('message')
-        pk = payload.get('pk')
+        pk = payload.get('sender_pk')
         result = False
         if platform == "Ethereum":
         #print("Ethereum")
