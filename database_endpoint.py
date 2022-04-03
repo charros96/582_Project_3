@@ -45,7 +45,7 @@ def process_order(content):
     order_obj = Order(**{f:order[f] for f in fields})
     order_obj.signature = signature
     #print(order_obj)
-    unfilled_db = g.session.query(Order).filter(Order.filled == None).all()
+    #unfilled_db = g.session.query(Order).filter(Order.filled == None).all()
     g.session.add(order_obj)
     g.session.commit()
     
@@ -107,7 +107,7 @@ def trade():
         if verify(content):
             process_order(content)
         else:
-            log_message(json.dumps(content.get('payload')))
+            log_message(content.get('payload'))
         #Note that you can access the database session using g.session
 
 @app.route('/order_book')
