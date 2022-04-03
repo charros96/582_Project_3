@@ -105,13 +105,17 @@ def trade():
         if verify(content):
             process_order(content)
         else:
-            log_message(content.get('payload'))
+            log_message(json.dumps(content.get('payload')))
         #Note that you can access the database session using g.session
 
 @app.route('/order_book')
 def order_book():
     #Your code here
-    db = g.session.query(Order).all()
+    raw_orders = g.session.query(Order).all()
+    db = []
+    required_keys = ['']
+    for order in raw_orders:
+        
     result = dict(data = db)
     #Note that you can access the database session using g.session
     return jsonify(result)
