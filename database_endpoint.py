@@ -103,6 +103,7 @@ def verify(content):
             algo_encoded_msg = json.dumps(payload).encode('utf-8')
             if algosdk.util.verify_bytes(algo_encoded_msg,sig,pk):
                 result = True
+        return result
 """
 ---------------- Endpoints ----------------
 """
