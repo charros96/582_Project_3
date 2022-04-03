@@ -29,12 +29,8 @@ def shutdown_session(response_or_exc):
 """
 -------- Helper methods (feel free to add your own!) -------
 """
-def order_to_dict(order):
-    fields = order.fields()
-    d = {}
-    for field in fields:
-        d[field]=order.field
-    return d
+def order_asdict(order):
+    return return {'receiver_pk': order.receiver_pk, 'sender_pk': order.sender_pk,'buy_currency': order.buy_currency, 'sell_currency': order.sell_currency, 'buy_amount': order.buy_amount, 'sell_amount': order.sell_amount, 'signature':order.signature}
 def log_message(d):
     # Takes input dictionary d and writes it to the Log table
     #g.session.query(Log).all()
@@ -125,7 +121,7 @@ def order_book():
     raw_db = g.session.query(Order).all()
     db = []
     for order in raw_db:
-        db.append(order_to_dict(order))
+        db.append(order_asdict(order))
     #result = dict(data = db)
     result = dict(data = db)
     #Note that you can access the database session using g.session
