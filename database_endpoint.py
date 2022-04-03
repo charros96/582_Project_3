@@ -36,8 +36,9 @@ def order_to_dict(order):
 def log_message(d):
     # Takes input dictionary d and writes it to the Log table
     #g.session.query(Log).all()
-    print(json.dumps(d))
-    log_obj = Log(json.dumps(d))
+    #print(json.dumps(d))
+    log_obj = Log()
+    log_obj.message = json.dumps(d)
     #log = g.session.get('log')
     g.session.add(log_obj)
     g.session.commit()
