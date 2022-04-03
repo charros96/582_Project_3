@@ -135,7 +135,7 @@ def trade():
             
         #Your code here
         if verify(content):
-            process_order(content)
+            process_order(content.get('payload'))
         #Note that you can access the database session using g.session
 
 @app.route('/order_book')
