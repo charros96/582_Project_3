@@ -115,10 +115,12 @@ def order_book():
     #Your code here
     db = g.session.query(Order).all()
        
-    result = dict(data = db)
+    #result = dict(data = db)
+    result = dict(data = [])
     #Note that you can access the database session using g.session
     return jsonify(result)
 
 if __name__ == '__main__':
     app.run(port='5002')
+
 
