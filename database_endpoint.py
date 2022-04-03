@@ -30,17 +30,21 @@ def shutdown_session(response_or_exc):
 -------- Helper methods (feel free to add your own!) -------
 """
 
-def log_message(d)
+def log_message(d):
     # Takes input dictionary d and writes it to the Log table
+    #g.session.query(Log).all()
+    g.session.add(json.dumps(d))
+    g.session.commit()
     pass
 def process_order(order):
     fields = ['sender_pk','receiver_pk','buy_currency','sell_currency','buy_amount','sell_amount']
     order_obj = Order(**{f:order[f] for f in fields})
-
+    
     #print(order_obj)
-    unfilled_db = session.query(Order).filter(Order.filled == None).all()
-    session.add(order_obj)
-    session.commit()
+    unfilled_db = g.session.query(Order).filter(Order.filled == None).all()
+    g.session.add(order_obj)
+    g.session.commit()
+    """
     for existing_order in unfilled_db:       
         if existing_order.buy_currency == order_obj.sell_currency:
             if existing_order.sell_currency == order_obj.buy_currency:
@@ -78,7 +82,7 @@ def process_order(order):
 
     
     session.commit()
-    
+    """
     pass
 
 def verify(content):
@@ -136,15 +140,18 @@ def trade():
         #Your code here
         if verify(content):
             process_order(content.get('payload'))
+        else: 
+            log_message(content.get('payload'))
         #Note that you can access the database session using g.session
 
 @app.route('/order_book')
 def order_book():
     #Your code here
-    db = session.query(Order).all()
+    db = g.session.query(Order).all()
     result = {'data' : db}
     #Note that you can access the database session using g.session
     return jsonify(result)
 
 if __name__ == '__main__':
     app.run(port='5002')
+
