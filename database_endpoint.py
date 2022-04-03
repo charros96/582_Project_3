@@ -36,53 +36,17 @@ def log_message(d):
     g.session.add(json.dumps(d))
     g.session.commit()
     pass
-def process_order(order):
+def process_order(content):
+    order = content.get('payload')
+    signature = content.get('sig')
     fields = ['sender_pk','receiver_pk','buy_currency','sell_currency','buy_amount','sell_amount']
     order_obj = Order(**{f:order[f] for f in fields})
-    
+    order_obj.signature = signature
     #print(order_obj)
     unfilled_db = g.session.query(Order).filter(Order.filled == None).all()
     g.session.add(order_obj)
     g.session.commit()
-    """
-    for existing_order in unfilled_db:       
-        if existing_order.buy_currency == order_obj.sell_currency:
-            if existing_order.sell_currency == order_obj.buy_currency:
-                if (existing_order.sell_amount / existing_order.buy_amount) >= (order_obj.buy_amount/order_obj.sell_amount) :
-                    
-                    existing_order.filled = datetime.now()
-                    order_obj.filled = datetime.now()
-                    existing_order.counterparty_id = order_obj.id
-                    #existing_order.counterparty = order_obj
-                    order_obj.counterparty_id = existing_order.id
-                    #order_obj.counterparty = existing_order
-                    session.commit()
-                    if (existing_order.buy_amount > order_obj.sell_amount) | (order_obj.buy_amount > existing_order.sell_amount) :
-                        if (existing_order.buy_amount > order_obj.sell_amount):
-                            parent = existing_order
-                            counter = order_obj
-                        if order_obj.buy_amount > existing_order.sell_amount:
-                            parent = order_obj
-                            counter = existing_order
-                        child = {}
-                        child['sender_pk'] = parent.sender_pk
-                        child['receiver_pk'] = parent.receiver_pk
-                        child['buy_currency'] = parent.buy_currency
-                        child['sell_currency'] = parent.sell_currency
-                        child['buy_amount'] = parent.buy_amount-counter.sell_amount
-                        child['sell_amount'] = (parent.buy_amount-counter.sell_amount)*(parent.sell_amount/parent.buy_amount)  
-                        child_obj = Order(**{f:child[f] for f in fields})
-                        child_obj.creator_id = parent.id
-                        session.add(child_obj)
-                        
-                        session.commit()
-                        break
-                    
-                    break
-
     
-    session.commit()
-    """
     pass
 
 def verify(content):
@@ -139,8 +103,8 @@ def trade():
             
         #Your code here
         if verify(content):
-            process_order(content.get('payload'))
-        else: 
+            process_order(content)
+        else:
             log_message(content.get('payload'))
         #Note that you can access the database session using g.session
 
@@ -148,7 +112,7 @@ def trade():
 def order_book():
     #Your code here
     db = g.session.query(Order).all()
-    result = {'data' : db}
+    result = dict(data = db)
     #Note that you can access the database session using g.session
     return jsonify(result)
 
