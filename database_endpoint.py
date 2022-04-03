@@ -33,7 +33,8 @@ def shutdown_session(response_or_exc):
 def log_message(d):
     # Takes input dictionary d and writes it to the Log table
     #g.session.query(Log).all()
-    g.session.add(json.dumps(d))
+    log_obj = Log(json.dumps(d))
+    g.session.add(log_obj)
     g.session.commit()
     pass
 def process_order(content):
