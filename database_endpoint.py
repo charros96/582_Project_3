@@ -34,8 +34,9 @@ def log_message(d):
     # Takes input dictionary d and writes it to the Log table
     #g.session.query(Log).all()
     #log_obj = Log(json.dumps(d))
-    #g.session.add(log_obj)
-    #g.session.commit()
+    log = g.session.get('log')
+    log.add(log_obj)
+    g.session.commit()
     pass
 
 def process_order(content):
