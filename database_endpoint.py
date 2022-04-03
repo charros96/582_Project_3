@@ -54,10 +54,10 @@ def process_order(content):
 def verify(content):
         sig = content.get('sig')
         payload = content.get('payload')
-        print(sig)
-        print(payload)
+        #print(sig)
+        #print(payload)
         platform = payload.get('platform')
-        message = payload.get('message')
+        #message = payload.get('message')
         pk = payload.get('sender_pk')
         result = False
         if platform == "Ethereum":
@@ -122,5 +122,4 @@ def order_book():
 
 if __name__ == '__main__':
     app.run(port='5002')
-
 
