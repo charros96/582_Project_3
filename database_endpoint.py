@@ -79,6 +79,7 @@ def verify(content):
             if algosdk.util.verify_bytes(algo_encoded_msg,sig,pk):
                 result = True
         return result
+        
 """
 ---------------- Endpoints ----------------
 """
@@ -114,6 +115,7 @@ def trade():
         else:
             log_message(content.get('payload'))
         #Note that you can access the database session using g.session
+        pass
 
 @app.route('/order_book')
 def order_book():
@@ -126,6 +128,7 @@ def order_book():
     result = dict(data = db)
     #Note that you can access the database session using g.session
     return jsonify(result)
+    pass
 
 if __name__ == '__main__':
     app.run(port='5002')
