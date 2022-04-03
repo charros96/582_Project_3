@@ -125,7 +125,8 @@ def order_book():
     for order in raw_db:
         db.append(order_asdict(order))
     #result = dict(data = db)
-    result = dict(data = db)
+    result = {}
+    result['data']=db
     #Note that you can access the database session using g.session
     return jsonify(result)
     pass
