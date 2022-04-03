@@ -127,9 +127,10 @@ def order_book():
     #result = dict(data = db)
     result = {}
     result['data']=db
+    print(result)
     #Note that you can access the database session using g.session
     return jsonify(result)
-    pass
+    
 
 if __name__ == '__main__':
     app.run(port='5002')
