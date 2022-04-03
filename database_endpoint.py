@@ -122,7 +122,7 @@ def order_book():
     raw_db = g.session.query(Order).all()
     db = []
     for order in raw_db:
-        db.add(dict(order))
+        db.append(dict(order))
     #result = dict(data = db)
     result = dict(data = db)
     #Note that you can access the database session using g.session
