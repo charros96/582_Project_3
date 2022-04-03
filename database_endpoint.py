@@ -31,7 +31,9 @@ def shutdown_session(response_or_exc):
 """
 def order_to_dict(order):
     fields = order.fields()
-
+    d = {}
+    for field in fields:
+        d[field]=order.field
     return d
 def log_message(d):
     # Takes input dictionary d and writes it to the Log table
@@ -123,7 +125,7 @@ def order_book():
     raw_db = g.session.query(Order).all()
     db = []
     for order in raw_db:
-        db.append(dict(order.__dict__))
+        db.append(order_to_dict(order))
     #result = dict(data = db)
     result = dict(data = db)
     #Note that you can access the database session using g.session
