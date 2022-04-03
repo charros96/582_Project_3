@@ -37,6 +37,7 @@ def log_message(d):
     g.session.add(log_obj)
     g.session.commit()
     pass
+
 def process_order(content):
     order = content.get('payload')
     signature = content.get('sig')
@@ -112,11 +113,8 @@ def trade():
 @app.route('/order_book')
 def order_book():
     #Your code here
-    raw_orders = g.session.query(Order).all()
-    db = []
-    required_keys = ['']
-    for order in raw_orders:
-        
+    db = g.session.query(Order).all()
+       
     result = dict(data = db)
     #Note that you can access the database session using g.session
     return jsonify(result)
