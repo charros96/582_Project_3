@@ -29,19 +29,24 @@ def shutdown_session(response_or_exc):
 """
 -------- Helper methods (feel free to add your own!) -------
 """
+def order_to_dict(order):
+    fields = order.fields()
 
+    return d
 def log_message(d):
     # Takes input dictionary d and writes it to the Log table
     #g.session.query(Log).all()
-    #log_obj = Log(json.dumps(d))
-    log = g.session.get('log')
-    log.add(log_obj)
+    print(json.dumps(d))
+    log_obj = Log(json.dumps(d))
+    #log = g.session.get('log')
+    g.session.add(log_obj)
     g.session.commit()
     pass
 
 def process_order(content):
     order = content.get('payload')
     signature = content.get('sig')
+    
     fields = ['sender_pk','receiver_pk','buy_currency','sell_currency','buy_amount','sell_amount']
     order_obj = Order(**{f:order[f] for f in fields})
     order_obj.signature = signature
@@ -114,10 +119,12 @@ def trade():
 @app.route('/order_book')
 def order_book():
     #Your code here
-    db = g.session.query(Order).all()
-       
+    raw_db = g.session.query(Order).all()
+    db = []
+    for order in raw_db:
+        db.add(dict(order))
     #result = dict(data = db)
-    result = dict(data = [])
+    result = dict(data = db)
     #Note that you can access the database session using g.session
     return jsonify(result)
 
